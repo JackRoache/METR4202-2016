@@ -6,7 +6,7 @@ G = rgb2gray(I);
 % find circles, really easy
 %http://au.mathworks.com/help/images/examples/detect-and-measure-circular-objects-in-an-image.html
 % Takes a long time, so left out for the moment
-% [centre, radius] = imfindcircles(G, [50, 200], 'ObjectPolarity','Dark','Sensitivity', 0.9);
+[centre, radius] = imfindcircles(G, [50, 200], 'ObjectPolarity','Dark','Sensitivity', 0.9);
 
 
 % rectangles / Boundary finding
