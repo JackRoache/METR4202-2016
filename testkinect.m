@@ -1,7 +1,7 @@
 %% Initialize color video device
 tic;
 %Get videoinput (vi) object
-colorVid = videoinput('kinect', 1, 'RGB_640x480');
+colorVid = videoinput('kinect', 1, 'BGR_1920x1080');
 
 %Set input settings
 colorVid.FramesPerTrigger = 1;  %Only request one frame per trigger call
@@ -9,7 +9,7 @@ colorVid.TriggerRepeat = Inf;   %Tell vi object to allow inf trigger calls
 
 
 %% Initialize color video device
-depthVid = videoinput('kinect', 2, 'Depth_640x480');
+depthVid = videoinput('kinect', 2, 'Depth_512x424');
 
 %Set input settings
 depthVid.FramesPerTrigger = 1;  %Only request one frame per trigger call
@@ -24,7 +24,7 @@ triggerconfig([colorVid depthVid], 'manual');
 start([colorVid depthVid]);
 
 %% Get and display 200 frames from vi devices
-figure('Position', [100, 100, 600, 1000]);
+figure('Position', [50, 50, 1800, 950]);
 
 % There are many ways to plot an image
 % 'imshow' tends to be the easiest how ever it is slow
@@ -33,7 +33,7 @@ figure('Position', [100, 100, 600, 1000]);
 % performance
 
 % Construct Color image subplot
-subplot(2, 1, 1);
+subplot(1, 2, 1);
 
 % Setup plot
 set(gca,'units','pixels');
@@ -55,7 +55,7 @@ cim = image(...
 axis image;
 
 % Construct Depth image subplot
-subplot(2, 1, 2);
+subplot(1, 2, 2);
 
 % Setup plot
 set(gca,'units','pixels');
@@ -94,7 +94,7 @@ try
         set(dim, 'cdata', depthIm); %Depth
         
         % Force a draw update
-        drawnow;
+        %drawnow;
     end
     
 catch ME
