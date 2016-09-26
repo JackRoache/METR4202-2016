@@ -1,6 +1,7 @@
 %% Delete previous input if it's running already
 try 
     delete([colorVid]);
+    delete([depthVid]);
     catch ME
 end
 
@@ -16,8 +17,16 @@ colorVid = videoinput('kinect', 1, 'BGR_1920x1080');
 colorVid.FramesPerTrigger = 1;  %Only request one frame per trigger call
 colorVid.TriggerRepeat = Inf;   %Tell vi object to allow inf trigger calls
 
+%% Initialize color video device
+depthVid = videoinput('kinect', 2, 'Depth_512x424');
+
+%Set input settings
+depthVid.FramesPerTrigger = 1;  %Only request one frame per trigger call
+depthVid.TriggerRepeat = Inf;   %Tell vi object to allow inf trigger calls
+
+
 %% Set trigger config for vi objects
-triggerconfig([colorVid], 'manual');
+triggerconfig([colorVid depthVid], 'manual');
 
 %% Start vi devices
 %start([colorVid]);

@@ -8,7 +8,7 @@ stop([colorVid]);
 %flip image
 colorIm = fliplr(colorIm);
 colorIm = imcrop(colorIm, [400 500 900 300]);
-%colorIm = imgaussfilt(colorIm);
+colorIm = imgaussfilt(colorIm,0.2);
 
 %show orignal image
 %figure(2)
@@ -39,7 +39,7 @@ viscircles(centers, radii,'EdgeColor','b');
 % 
 P = houghpeaks(h,1000,'threshold',ceil(0.005*max(h(:))));
 % 
-lines = houghlines(BW, theta, rho, P, 'FillGap', 2, 'MinLength', 6);
+lines = houghlines(BW, theta, rho, P, 'FillGap', 4, 'MinLength', 8);
 
 % figure(1)
 % imshow(BW)
@@ -64,7 +64,7 @@ for k = 1:length(lines)
 end
 
 radiusThresh = 35; %pixels
-gradientThresh = 5; %degrees
+gradientThresh = 10; %degrees
 for i = 1:length(points)
     currentLine = points(:,i);
     currentCP = [(currentLine(1)+currentLine(3))/2, (currentLine(2)+currentLine(4))/2];
@@ -76,6 +76,7 @@ for i = 1:length(points)
         if(j~=i)
             testLine = points(:,j);
             testGrad = testLine(5);
+            testLength = sqrt((testLine(1)-testLine(3))^2 + (testLine(2)-testLine(4))^2);
             testCP = [(testLine(1)+testLine(3))/2, (testLine(2)+testLine(4))/2];
             
             anglebetween = abs(testGrad - currentGrad);
@@ -94,7 +95,7 @@ for i = 1:length(points)
             if(perCheckLow && perCheckHigh)
                 distance = sqrt((testCP(1)-currentCP(1))^2 + (testCP(2)-currentCP(2))^2);
                 if(distance <= radiusThresh)
-                    closeLineCount = closeLineCount+3;
+                    closeLineCount = closeLineCount+testLength*1;
                 end
             end
         end
@@ -116,8 +117,8 @@ end
 [Y2,I2]=sort(points(7,:),'descend');
 [Y3,I3]=sort(points(8,:),'descend');
 
-topx = 50;
-radi = true(topx,1)*40;
+topx = ceil(0.5*length(I3));
+radi = true(topx,1)*radiusThresh;
 
 % strongCloseLine = points(:,I(1:topx));
 % strongCloseCircle = points(:,I2(1:topx));
@@ -126,6 +127,49 @@ radi = true(topx,1)*40;
 % viscircles(lineCP, radi,'EdgeColor','r');
 % viscircles(circleCP, radi,'EdgeColor','g');
 
-plzdomino = points(:,I2(1:topx));
-plzbegud = transpose([(plzdomino(1,:)+plzdomino(3,:))/2; (plzdomino(2,:)+plzdomino(4,:))/2]);
-viscircles(plzbegud, radi,'EdgeColor','g');
+StrongWeighted = points(:,I2(1:topx));
+TopCPs = transpose([(StrongWeighted(1,:)+StrongWeighted(3,:))/2; (StrongWeighted(2,:)+StrongWeighted(4,:))/2]);
+%viscircles(TopCPs, radi,'EdgeColor','g');
+
+SetMidPoints = [TopCPs(1,:),1];
+radiusThresh = 50;
+%OutOfRange = 1;
+
+
+for i = 2:length(TopCPs)
+    nextPoint = TopCPs(i,:);
+    %nextPointMatr =  ones(size(SetMidPoints,1),2)*nextPoint;
+    Distances = hypot(SetMidPoints(:,1) - nextPoint(1),SetMidPoints(:,2) - nextPoint(2));
+    
+    [d,I] = min(Distances);
+    
+    if (d <= radiusThresh)
+        SetPop = SetMidPoints(I,3);
+        AvgSum = SetMidPoints(I,1:2)*SetPop;
+        AvgSum = AvgSum + nextPoint;
+        Avg = AvgSum / (SetPop+1);
+        
+        SetMidPoints(I,:) = [Avg, SetPop+1];
+    else
+        SetMidPoints(size(SetMidPoints,1)+1,:) = [nextPoint, 1];
+    end         
+end
+
+radi = true(size(SetMidPoints,1),1)*radiusThresh;
+viscircles(SetMidPoints(:,1:2), radi,'EdgeColor','r');
+
+width = 100;
+height = 100;
+%croppedImages = zeros(size(SetMidPoints,1),width,height,3);
+clear croppedImages;
+for i = 1:size(SetMidPoints,1)
+    x = ceil(SetMidPoints(i,1)-(width/2));
+    y = ceil(SetMidPoints(i,2)-(height/2));
+    croppedImages{i} = imcrop(colorIm, [x y width height]);
+end
+
+
+    
+    
+    
+    
