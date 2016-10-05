@@ -39,9 +39,25 @@ clf
 hold on
 imshow(BW1fill);
 
-for k = 1:length(Shapes)
-end
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Given camerar Parameters, origin frame and rotation vector.
+% 
+% Take pixel points
+% 
+% undistortPoints()   % Corrects for camera distortion. Needs to be original
+%                     % Image points.
+%                     
+% cameraParameters.toWorldPoints()
+% 
+% get a z point from relative size. 
+% This is relative to the cameras point of view
+% translate to new origin. 
 
-%Now have shapes that are large enough to move onwards.
+
+
+
+
+
+
 
 

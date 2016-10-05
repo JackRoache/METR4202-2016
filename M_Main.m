@@ -3,11 +3,22 @@ clear
 clc
 
 %%
-M_StartKinect
+% [colorVid, depthVid] = M_StartKinect();
+
+% Basic testing code. Takes in the webcam input.
+delete colorVid;
+clear colorVid;
+colorVid = videoinput('winvideo', 1);
+colorVid.FramesPerTrigger = 1;
+colorVid.TriggerRepeat = Inf;
+triggerconfig(colorVid, 'manual');
 
 %%
-M_Calibration
+[cameraParams, estimateError, frames] = M_Calibration(colorVid);
 
 %%
-M_SensorPlacement
+[FrameT,FrameR] = M_SensorPlacement(colorVid, frames);
+
+
+
 

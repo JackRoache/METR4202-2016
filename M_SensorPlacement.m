@@ -1,4 +1,6 @@
 %%
+function [FrameTrans, FrameRot] = M_SensorPlacement(colorVid, frame)
+
 if exist('frame', 'var')==0
     display('Can Not Place Axis Without Calibration');
 else

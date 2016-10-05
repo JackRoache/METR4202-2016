@@ -1,4 +1,6 @@
 %% Delete previous input if it's running already
+function [colorVid, depthVid] = M_StartKinect()
+
 try 
     delete([colorVid]);
     delete([depthVid]);
@@ -30,3 +32,4 @@ triggerconfig([colorVid depthVid], 'manual');
 
 %% Start vi devices
 %start([colorVid]);
+end
