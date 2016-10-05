@@ -24,10 +24,11 @@ else
     squareSize = 25.125;
     worldPoints = generateCheckerboardPoints(boardSize, squareSize);
     [params, ~, estimateErrors] = estimateCameraParameters(imagePoints, worldPoints);
+    [FrameRot, FrameTrans] = extrinsics(imagePoints(:,:,end), worldPoints, params);
             
     %Assumes there is 3 or more photos
-    l = length(params.TranslationVectors);
-    FrameTrans = params.TranslationVectors(l,:,:)
-    FrameRot = params.RotationVectors(l,:,:)
+%     l = length(params.TranslationVectors);
+%     FrameTrans = params.TranslationVectors;%(l,:,:);
+%     FrameRot = params.RotationVectors(l,:,:);
 
 end
