@@ -7,7 +7,7 @@ stop([colorVid]);
 
 %flip image
 colorIm = fliplr(colorIm);
-colorIm = imcrop(colorIm, [400 500 900 300]);
+% colorIm = imcrop(colorIm, [400 500 900 300]);
 colorIm = imgaussfilt(colorIm,0.2);
 
 %show orignal image
