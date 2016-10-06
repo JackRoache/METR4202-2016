@@ -69,13 +69,18 @@ for i=1:length(dominos)
     eqn1 = A == 1/(tan(x)*sin(y));
     eqn2 = B == 2*cos(y) / sqrt( cos(x)^2 + sin(x)^2*sin(y)^2 );
     S = vpasolve(eqn1, eqn2, 1.57);
-    theta = double(S.x*180/pi);
-    phi = double(S.y*180/pi);
+    if (any(size(S.x) == 0))
+       theta = 0;
+       phi = 0;
+    else
+       theta = double(S.x*180/pi);
+       phi = double(S.y*180/pi);
 
-    theta = mod(theta,360);
-    if(theta>90)
-        theta = 180 - theta;
-        phi = phi * -1;
+       theta = mod(theta,360);
+       if(theta>90)
+           theta = 180 - theta;
+           phi = phi * -1;
+       end
     end
 
 %     arrow_y = 10*sin(theta);

@@ -33,7 +33,6 @@ else
             FrameRot = params.RotationMatrices(:,:,end);
             FrameTrans = params.TranslationVectors(end,:);
             noPic = 0;
-            norm(FrameTrans)
         end    
     end
     

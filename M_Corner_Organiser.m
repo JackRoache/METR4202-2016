@@ -1,4 +1,4 @@
-function [orderedCorners, ratio] = M_Corner_Organiser(cornerSet)
+function [orderedCorners, ratio, orderedPerimeter] = M_Corner_Organiser(cornerSet)
 
     %find the corners
     numPoints = size(cornerSet,1);
@@ -26,9 +26,15 @@ function [orderedCorners, ratio] = M_Corner_Organiser(cornerSet)
         end
     end
     
-    %find the corners
+    %find the corners       
     randomOrderCorners = uniquePoints(find(uniquePoints(:,3) == 2),1:2);
-
+    if (size(randomOrderCorners, 1)~=4)
+        orderedCorners = [0, 0];
+        ratio = 0;
+        orderedPerimeter = [0 0];
+        return;
+    end
+   
     cp = mean(randomOrderCorners);
     
     startingCorner = randomOrderCorners(1,:);
@@ -50,8 +56,27 @@ function [orderedCorners, ratio] = M_Corner_Organiser(cornerSet)
     
     indexesBetweenCorners = find(orderedPerimeter(:,3) == 2);
     ratio = [indexesBetweenCorners(2)-indexesBetweenCorners(1),indexesBetweenCorners(3)-indexesBetweenCorners(2)];
+    
+    
 end
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
