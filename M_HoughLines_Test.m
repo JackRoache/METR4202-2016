@@ -26,7 +26,7 @@ hold on;
 
 %%
 % Finds cirlces on the image
-[centers, radii, metric] = imfindcircles(BW,[3 15]);
+[centers, radii, metric] = imfindcircles(BW,[3 13]);
 
 % %centersStrong5 = centers(1:5);
 % %radiiStrong5 = radii(1:5);
@@ -83,9 +83,9 @@ end
 %  lines are nearby.
 
 % How far to check for nearby objects
-radiusThresh = 35; %pixels
+radiusThresh = 50; %pixels
 % Angle difference to be still counted as parrallel/perpendicular
-gradientThresh = 10; %degrees
+gradientThresh = 15; %degrees
 
 for i = 1:length(points)
     % Get the two points of the line
@@ -121,7 +121,7 @@ for i = 1:length(points)
                 distance = sqrt((testCP(1)-currentCP(1))^2 + (testCP(2)-currentCP(2))^2);
                 if(distance <= radiusThresh)
                     % Increase chance of being a domino by one
-                    closeLineCount = closeLineCount+1;
+                    closeLineCount = closeLineCount+0.5;
                 end
             end
             % If perpendicular
@@ -130,7 +130,7 @@ for i = 1:length(points)
                 if(distance <= radiusThresh)
                     % Increase chance of being a domino by the length of
                     % the line (Dominos tend to be the longest lines.
-                    closeLineCount = closeLineCount+testLength*1;
+                    closeLineCount = closeLineCount+testLength*2;
                 end
             end
         end
@@ -139,7 +139,7 @@ for i = 1:length(points)
     for j = 1:length(centers)
         distance = sqrt((centers(j,1)-currentCP(1))^2 + (centers(j,2)-currentCP(2))^2);
         if(distance <= radiusThresh)
-            closeCircleCount = closeCircleCount+1;
+            closeCircleCount = closeCircleCount+2;
         end
     end
     
@@ -148,14 +148,14 @@ for i = 1:length(points)
     
     % Weight the points by how many lines and circles are near them
     % With 4 times the weight on lines over circles
-    points(8,i) = 4*closeLineCount+1*closeCircleCount;
+    points(8,i) = 1*closeLineCount+1*closeCircleCount;
 end
 
 %%
 % Sort the points in descending order of their nearby objects score
 
 % [Y,I]=sort(points(6,:),'descend');
-% [Y2,I2]=sort(points(7,:),'descend');
+[Y2,I2]=sort(points(7,:),'descend');
 [Y3,I3]=sort(points(8,:),'descend');
 
 % The lines with the top 50% of scores are proposed as possible dominos
@@ -179,7 +179,7 @@ StrongWeighted = points(:,I2(1:topx));
 % Get centre points
 TopCPs = transpose([(StrongWeighted(1,:)+StrongWeighted(3,:))/2; (StrongWeighted(2,:)+StrongWeighted(4,:))/2]);
 % Plot the circles (gets pretty thick)
-%viscircles(TopCPs, radi,'EdgeColor','g');
+%viscircles(TopCPs, radii,'EdgeColor','g');
 
 %% Cluster calculation (I use the words cluster and set interchangably)
 

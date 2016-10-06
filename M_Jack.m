@@ -18,7 +18,6 @@ colorIm = imcrop(colorIm, [400 600 900 400]);
 colorImoriginal = colorIm;
 colorIm = imgaussfilt(colorIm,0.2);
 
-
 red = (colorIm(:,:,1));
 green = (colorIm(:,:,2));
 blue = (colorIm(:,:,3));
@@ -117,26 +116,24 @@ subplot(2,2,3)
 imshow(BW1f)
 subplot(2,2,4)
 imshow(colorIm .* repmat(uint8(BW1f),1,1,3))
+
 %find the large shapes
 
-Stats = regionprops(BW1fill, 'Basic');
-areas = [Stats.Area];
-
-Shapes = [];
-for k = 1:length(Stats)
-    if (areas(k) > minShapeSize)
-        Shapes = [Shapes Stats(k)];
-    end
-end
+% Stats = regionprops(BW1fill, 'Basic');
+% areas = [Stats.Area];
+% 
+% Shapes = [];
+% for k = 1:length(Stats)
+%     if (areas(k) > minShapeSize)
+%         Shapes = [Shapes Stats(k)];
+%     end
+% end
 
 %clf
 %hold on
 %imshow(BW1fill);
 
-
-for k = 1:length(Shapes)
-end
-
 %Now have shapes that are large enough to move onwards.
 toc
+
 
