@@ -1,4 +1,4 @@
-function  [dominoProps] = M_transform(dominos)
+function  [dominoProps] = M_transform(dominos, boxes)
 % Make object to record dominos
 dominoProps = zeros(length(dominos),6);
 
@@ -12,8 +12,8 @@ for i=1:length(dominos)
     w4 = c(4,1:2);
 
     % Define Centre
-    dominoProps(i,1) = (w1(1)+w2(1)+w3(1)+w4(1))/4;
-    dominoProps(i,2) = (w1(2)+w2(2)+w3(2)+w4(2))/4;
+    dominoProps(i,1) = (w1(1)+w2(1)+w3(1)+w4(1))/4 + boxes(i,1);
+    dominoProps(i,2) = (w1(2)+w2(2)+w3(2)+w4(2))/4 + boxes(i,2);
     
     % Define Lines
     line1 = [w1,w2];
