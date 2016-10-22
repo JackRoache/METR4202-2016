@@ -1,14 +1,15 @@
-function [dominoCorners] = M_Hough_Parallel(cropIm)
+function [dominoCorners] = M_Hough_Parallel(grayscale)
 % Threshold Variables
     gradientThresh = 20; %degrees
     offsetThresh = 0.3; %pecentage (make this a percentage of the image height later?)
     a = 0;
-    I = rgb2gray(cropIm);
+    I = grayscale;
     % Blur
     I = imgaussfilt(I,1);
     % Edge detect
     [~, threshold] = edge(I,'Canny');
     BW = edge(I, 'Canny',threshold*0.3);
+    BW = bwareafilt(BW, [15 2000]);
     
     %% Hough Transform
     [h,theta, rho] = hough(BW);
