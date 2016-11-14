@@ -36,20 +36,29 @@ for loopcount = 1:50
     
     result2 = bwf;
     
+    % Run blob analysis to create bounding boxes relative to frame (which
+    % has been cropped from the raw image obtained)
     bboxes = M_Blob(bwf);
-    
+    % Increases the size of the bounding box for safety
     bboxes(:,1) = bboxes(:,1) - 10;
     bboxes(:,2) = bboxes(:,2) - 10;
     bboxes(:,3) = bboxes(:,3) + 20;
     bboxes(:,4) = bboxes(:,4) + 20;
     
+    % Makes a set of lines of each domino. Each cell is a domino,
+    % each entry in the cell is a start point, end point and distance.
+    % Points are relative to their cropped boxes not the whole frame.
     dominoLines = {};
     for l = 1:size(bboxes,1)
         dominoLines{l} = M_Hough_Parallel(imcrop(result1, bboxes(l, 1:end)));
     end
     
+    % Because the lines are relative to their boxes, this function sorts
+    % the corners into clockwise order and then adds the respective box to
+    % the vector.
     [clean_corners, boxes, ratios, orderedPerimeter] = M_Corner_Filter(dominoLines, bboxes);
-    % Finds Pips
+    
+    % Finds Pips. Returns domino object that has 
     dominos = {};
     for k = 1:size(boxes)
         dominos{k} = M_countDots(clean_corners{k}, imcrop(bw, boxes(k, 1:end)), boxes(k,:), orderedPerimeter{k});
@@ -85,6 +94,11 @@ for loopcount = 1:50
     %             end
     %         end
     %     end
+    
+    
+    
+    
+    
 end
 
 stop(video);
