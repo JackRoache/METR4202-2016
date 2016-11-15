@@ -1,7 +1,7 @@
 function [dominoCorners] = M_Hough_Parallel(grayscale)
 % Threshold Variables
     gradientThresh = 20; %degrees
-    offsetThresh = 0.3; %pecentage (make this a percentage of the image height later?)
+    offsetThresh = 0.3; %percentage (make this a percentage of the image height later?)
     a = 0;
     I = grayscale;
     % Blur
