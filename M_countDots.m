@@ -1,8 +1,12 @@
-function [domino] = M_countDots(corners, croppedImage, box, orderedPerimeter)
-    boxX = box(1);
-    boxY = box(2);
-    domino(1) = 0;
-    domino(2) = 0;
+
+% function [domino] = M_countDots(corners, croppedImage, box, orderedPerimeter)
+function [domino] = M_countDots(domino, croppedImage)
+    boxX = domino.bBox(1);
+    boxY = domino.bBox(2);
+    corners = domino.boxDetails.corners;
+    orderedPerimeter = domino.boxDetails.points;
+%     domino(1) = 0;
+%     domino(2) = 0;
     Stats = regionprops(not(croppedImage), 'Basic');
     
 %    Stats = [regionprops(croppedImage); regionprops(not(croppedImage))];
@@ -21,11 +25,17 @@ function [domino] = M_countDots(corners, croppedImage, box, orderedPerimeter)
 %     end
     
     a = sum(orderedPerimeter(:,3) == 3);
+    % If no t junctions then its a dice
     if a == 0
-        domino(1) = box(1)+mean(corners(:,1));
-        domino(2) = box(2)+mean(corners(:,2));
-        domino(3) = M_Check_Area(corners, Stats);
+        domino.dominoOrDice = 0;
+        domino.boxDetails.Centroid = [mean(corners(:,1)) mean(corners(:,2))];
+        frameCentX = mean(corners(:,1))+boxX;
+        frameCentY = mean(corners(:,2))+boxY;
+        domino.frameDetails.Centroid = [frameCentX frameCentY];
+        domino.pips = M_Check_Area(corners, Stats);
+    % If 2 t junctions then its a domino
     elseif (a == 2)
+        domino.dominoOrDice = 1;
         %check rect
         edgePointInd = find(orderedPerimeter(:,3) == 3);
         firstEdgePointInd = edgePointInd(1);
@@ -80,12 +90,14 @@ function [domino] = M_countDots(corners, croppedImage, box, orderedPerimeter)
         
         F_Num = M_Check_Area(Fcorners, Stats);
         S_Num = M_Check_Area(Scorners, Stats);
+                
+        domino.boxDetails.Centroid = [mean(corners(:,1)) mean(corners(:,2))];
+        frameCentX = mean(corners(:,1))+boxX;
+        frameCentY = mean(corners(:,2))+boxY;
+        domino.frameDetails.Centroid = [frameCentX frameCentY];
+        domino.pips = [min([F_Num, S_Num]) max([F_Num, S_Num])];
         
-   
-        domino(1) = box(1)+mean(corners(:,1));
-        domino(2) = box(2)+mean(corners(:,2));
-        domino(3) = min([F_Num, S_Num]);
-        domino(4) = max([F_Num, S_Num]);
+    % If it has not 0 or 2 t junctions then wig out
     else
         domino = [];
     end

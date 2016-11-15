@@ -1,14 +1,7 @@
-function [dominoPos] = M_position(dominoProps, cameraParams, FrameR, FrameT)
-
-dominoPos = zeros(size(dominoProps,3));
-
-for i=1:size(dominoProps,1)
-%     area = dominoProps(i,6);  
-    centroid = dominoProps(i,1:2);
-    
-    dominoPos(i, 1:2) = pointsToWorld(cameraParams, FrameR, FrameT, centroid + [400 600]);
-    dominoPos(i, 3) = 0;
-    
-end
+function [domino] = M_position(domino, cameraParams, FrameR, FrameT, cropPoint)
+ 
+    centroid = domino.frameDetails.Centroid;
+    xy = pointsToWorld(cameraParams, FrameR, FrameT, centroid + cropPoint);
+    domino.roboDetails.Centroid = [xy(1) xy(2) 0];
     
 end
