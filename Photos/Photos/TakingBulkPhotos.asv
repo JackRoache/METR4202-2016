@@ -1,0 +1,8 @@
+start([colorVid]);
+
+trigger(colorVid);
+[colorIm, colorTime, colorMeta] = getdata(colorVid);
+
+imwrite(colorIm, 'T-7-NC-H.png');
+
+stop([colorVid]);
