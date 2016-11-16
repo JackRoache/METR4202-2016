@@ -1,3 +1,4 @@
+% applies blob analysis and returns bounding boxes.
 function [boundingBoxs] = M_Blob(BWim)
 
 blobAnalysis = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...

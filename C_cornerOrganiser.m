@@ -3,7 +3,7 @@
 % just returns zeros: 
 %    orderedCorners = [0,0], ratio = 0, orderedPerimeter = [0,0]
 % Note: points are relative to the cropped image
-function [orderedCorners, ratio, orderedPerimeter] = M_Corner_Organiser(cornerSet)
+function [orderedCorners, ratio, orderedPerimeter] = C_cornerOrganiser(cornerSet)
     
     % Makes the vector for all line points
     % Number of lines in set

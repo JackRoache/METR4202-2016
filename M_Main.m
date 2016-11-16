@@ -7,7 +7,7 @@ try
 catch ME
 end
 
-% [colorVid, depthVid] = M_StartKinect();
+images = struct('color', [], 'bwf', [], 'bw', [], 'crop', [], 'time', [], 'meta', []);
 
 
 start(colorVid);
@@ -24,25 +24,25 @@ while ~LIGHTS_OUT
     
     % Take Frame
     trigger(colorVid);
-    [colorIm, time, meta] = getdata(colorVid);
+    [color, images.time, images.meta] = getdata(colorVid);
     
     
     % Image Filter
-    [BWf,BW, fixedColorIm] = M_filterImages(colorIm, cameraParams);
-    BW = im2bw(fixedColorIm, 0.3);
+    [images.bwf,images.bw, images.color] = M_filterImages(color, cameraParams);
+    images.bw = im2bw(images.color, 0.3);
     % Blob Analysis
-    bboxes = M_Blob(BWf);
+    bboxes = M_Blob(images.bw);
     % Hough Lines Analysis
     dominoLines = {};
     for k = 1:size(bboxes,1)
-        dominoLines{k} = M_Hough_Parallel(imcrop(fixedColorIm, bboxes(k, 1:end)));
+        dominoLines{k} = M_Hough_Parallel(imcrop(images.color, bboxes(k, 1:end)));
     end   
     % Object Filter
     [clean_corners, boxes, ratios, orderedPerimeter] = M_Corner_Filter(dominoLines, bboxes);
     % Finds Pips    
     dominos = {};
     for k = 1:size(boxes)
-        dominos{k} = M_countDots(clean_corners{k}, imcrop(BW, boxes(k, 1:end)), boxes(k,:), orderedPerimeter{k});
+        dominos{k} = M_countDots(clean_corners{k}, imcrop(images.bw, boxes(k, 1:end)), boxes(k,:), orderedPerimeter{k});
     end
     
     % Positioning
@@ -60,15 +60,9 @@ while ~LIGHTS_OUT
 %     
 %         end
 %     end
-
-    
-    
-
-
-
     % Draws Pip(boy) Numbers
     
-    result = fixedColorIm;
+    result = images.color;
     tableText = '';
     for k=1:size(dominos,2)
         if isempty(dominos{k})
@@ -82,12 +76,6 @@ while ~LIGHTS_OUT
             result = insertText(result, [0 k*22], tableText, 'TextColor', 'black');
         end
     end
-    
-        
-    
-    
-
-    
     
     result = insertText(result, [0 0], tableText, 'TextColor', 'black');
     
@@ -108,11 +96,7 @@ while ~LIGHTS_OUT
         end
     end
 
-
-    % Display Data
-%     figure(1)
-%     imshow(result);
-    imshow(result .* repmat(uint8(BWf),1,1,3));
+    imshow(result .* repmat(uint8(images.bwf),1,1,3));
     hold on
     
     
@@ -194,26 +178,6 @@ while ~LIGHTS_OUT
 %     end
 %     hold off;
 end
-
-%exits video, shuts down
-% stop(colorVid);
-
-
-
-
-% pause;
-% start(colorVid);
-% trigger(colorVid);
-% [f, time, meta] = getdata(colorVid);
-% stop(colorVid);
-% %1000 is whats measured. 1250mm^2 for the domino.
-% distance = M_Distance(pixelArea, 1000, 1250);
-% [x,y] = cameraParams.pointsToWorld(FrameR, FrameT, undistortPoints(pixelPoint, cameraparams));
-% z = Frame(t) - distance * FrameR;
-% z = z(3);
-%x,y and z are wrt to the real world.
-
-
 end
 
 function [] = myKeyPressed()

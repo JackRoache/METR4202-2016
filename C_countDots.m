@@ -1,6 +1,6 @@
 
 % function [domino] = M_countDots(corners, croppedImage, box, orderedPerimeter)
-function [domino] = M_countDots(domino, croppedImage)
+function [domino] = C_countDots(domino, croppedImage)
     boxX = domino.bBox(1);
     boxY = domino.bBox(2);
     corners = domino.boxDetails.corners;

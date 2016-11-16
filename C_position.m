@@ -1,4 +1,4 @@
-function [domino] = M_position(domino, cameraParams, FrameR, FrameT, cropPoint)
+function [domino] = C_position(domino, cameraParams, FrameR, FrameT, cropPoint)
  
     centroid = double(domino.frameDetails.Centroid);
     xy = pointsToWorld(cameraParams, FrameR, FrameT, centroid + cropPoint);

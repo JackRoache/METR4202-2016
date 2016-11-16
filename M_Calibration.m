@@ -2,7 +2,7 @@
 
 %% Take photos
 function [params, estimateErrors, frames] = M_Calibration(colorVid)
-squareSize = 25.125;
+squareSize = 14.25;
 frames = [];
 NumberOfPhotos = 2;
 
@@ -32,7 +32,7 @@ while sumErrors > 5;
         
         [params, used, estimateErrors] = estimateCameraParameters(imagePoints, worldPoints);
         
-        sumErrors = mean(estimateErrors.ExtrinsicsErrors.TranslationVectorsError);
+        sumErrors = norm(mean(estimateErrors.ExtrinsicsErrors.TranslationVectorsError));
         if used(end) > 0
             NumberOfPhotos = NumberOfPhotos + 1;
             displayErrors(estimateErrors, params);

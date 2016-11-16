@@ -2,7 +2,7 @@
 % of the form [startpoint endpoint distance]
 
 % function [dominoCorners, boundingBoxs, ratios, orderedPerimeters] = M_Corner_Filter(corners, boxes)
-function [dominos] = M_Corner_Filter(corners, boxes)
+function [dominos] = C_cornerFilter(corners, boxes)
     
     dominos = cell(1, length(corners));
     for k = 1:length(corners)
@@ -11,7 +11,7 @@ function [dominos] = M_Corner_Filter(corners, boxes)
            % corner organiser only returns those dominos with 4 corners,
            % with the corners sorted in clockwise order.
            % organisedCorners is just x and y points.
-           [organisedCorners,~,orderedPerimeter] = M_Corner_Organiser(c);
+           [organisedCorners,~,orderedPerimeter] = C_cornerOrganiser(c);
            % Returns only those dominos that have 4 corners
            if size(organisedCorners,1) == 4
                domino.boxDetails.corners = organisedCorners;
