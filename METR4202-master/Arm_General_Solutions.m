@@ -1,6 +1,6 @@
 %same spot but moving arm;
 res = calllib('dynamixel','dxl_initialize',6,1);
-angleSet = Inverse_Kinematics_Test(0, 100, 30);
+angleSet = Inverse_Kinematics(0, 100, 30);
 
 for i=1:length(angleSet)
     theta1 = angleSet(i,1);

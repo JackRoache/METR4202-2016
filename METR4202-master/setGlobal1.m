@@ -1,5 +1,5 @@
 function setGlobal1()
     global WSx WSy;
-    WSx = 6;
-    WSy = 6;
+    WSx = 7;
+    WSy = 5;
 end

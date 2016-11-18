@@ -4,7 +4,7 @@ function angles = Arm_Find_Solution(x,y)
     L3 = 150;
     
     %phi = theta1+theta2+theta3
-    phi = transpose(-120:1:120);
+    phi = transpose(-160:1:160);
     
     y_dash = y - L3*cosd(phi);
     
@@ -21,6 +21,7 @@ function angles = Arm_Find_Solution(x,y)
     y_dash = y_dash(I);
     
     %find theta2 solutions for each phi
+    phi(find(phi==0))=1;
     theta2 = acosd(k(I)).*sign(phi);
     
     %theta1 = acosd((y_dash.*(L2*cosd(theta2)+L1) + x_dash.*(L2*sind(theta2)))./(L2^2 + L1^2 + 2*L1*L2*cosd(theta2)));
@@ -39,6 +40,6 @@ function angles = Arm_Find_Solution(x,y)
     angles = [theta1,theta2,theta3,phi];
     
     angles = angles(find(abs(angles(:,1))<=90),:);
-    angles = angles(find(abs(angles(:,2))<=90),:);
+    angles = angles(find(abs(angles(:,2))<=125),:);
     angles = angles(find(abs(angles(:,3))<=90),:);
 end

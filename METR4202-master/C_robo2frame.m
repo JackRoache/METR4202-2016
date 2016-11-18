@@ -1,5 +1,13 @@
 function [frame_x, frame_y] = C_robo2frame(robo_x, robo_y, robo_z, cameraParams, trans, rot, cropPoint)
     
+    fid2robo_x = 94;
+    fid2robo_y = 32;
+    fid2robo_z = -25;
+
+    robo_x = robo_x + fid2robo_x;
+    robo_y = robo_y + fid2robo_y;
+    robo_z = robo_z + fid2robo_z;
+    
     trans = transpose(trans);
     rot = transpose(rot);
     principle_x = cameraParams.PrincipalPoint(1);
@@ -12,7 +20,7 @@ function [frame_x, frame_y] = C_robo2frame(robo_x, robo_y, robo_z, cameraParams,
     
     for i=1:numPoints
         
-        robo_point = [robo_x(i); robo_y(i); robo_z(i)];
+        robo_point = [robo_y(i); robo_x(i); robo_z(i)];
         camera_point = trans+rot*robo_point;
         camera_x = camera_point(1);
         camera_y = camera_point(2);

@@ -1,4 +1,9 @@
 function [cameraParams, trans, rot] = C_bestCalibration(video)
+
+if(~libisloaded('dynamixel'))
+loadlibrary('dynamixel', 'dynamixel.h')
+end
+
 % Define images to process
 imageFileNames = {'C:\Users\Seeing The Invisible\Google Drive\Uni\Courses\2016 Semester 2\METR4202\Lab 3\METR4202-master\Calibration\cal1.png',...
     'C:\Users\Seeing The Invisible\Google Drive\Uni\Courses\2016 Semester 2\METR4202\Lab 3\METR4202-master\Calibration\cal3.png',...

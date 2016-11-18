@@ -1,4 +1,4 @@
-function [optpath] = METR4202_MOTIONPLANNING(start, endm, obstacles)
+function [optpath,NoPath] = METR4202_MOTIONPLANNING(start, endm, obstacles)
     %start=[1,1];
     %start = [dominovalues(2)(1)(1), dominovalues(2)(1)(2)];
     [WSx, WSy] = setGlobal();

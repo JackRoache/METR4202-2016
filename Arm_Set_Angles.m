@@ -9,31 +9,36 @@
 %
 %
 %Dynamixel connection must be initialised prior to using the function
-function Arm_Set_Angles(theta1,theta2,theta3,theta4)
+function Arm_Set_Angles(theta1,theta2,theta3,theta4,port)
+if(port)
+    calllib('dynamixel','dxl_initialize',port,1);
+end
 if(theta1 >= -90 && theta1 <=90)
     set_angle(1,512-theta1*1024/300);
 else
-    warning('Motor 1 out of range, did not move')
+    %warning('Motor 1 out of range, did not move')
 end
 
-if(theta2 >= -90 && theta2 <=90)
+if(theta2 >= -125 && theta2 <=125)
     set_angle(2,512-theta2*1024/300);
 else
-    warning('Motor 2 out of range, did not move')
+    %warning('Motor 2 out of range, did not move')
 end
 
 if(theta3 >= -90 && theta3 <=90)
     set_angle(3,512+theta3*1024/300);
 else
-    warning('Motor 3 out of range, did not move')
+    %warning('Motor 3 out of range, did not move')
 end
 
 if(theta4 >= -20 && theta4 <=45)
     set_angle(4,512-theta4*1024/300);
 else
-    warning('Motor 4 out of range, did not move')
+    %warning('Motor 4 out of range, did not move')
 end
-
+if(port)
+    calllib('dynamixel','dxl_terminate');
+end
 end
 
 function set_angle(id,angle)

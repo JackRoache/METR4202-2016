@@ -1,4 +1,4 @@
-function gridpos = pip2grid(pip)
+function gridpos = C_pip2grid(pip)
 %     pip=[2,4];
     c=[];
     z = [];
@@ -22,8 +22,8 @@ function gridpos = pip2grid(pip)
     end
     
     %%num2grid
-    for gx = 1:6
-        for gy = 1:6
+    for gx = 1:7
+        for gy = 1:5
             gz = cat(1,gz,[gx,gy]);
             if size(gz,1)==gridposnum;
                 gridpos = [gz(end,1), gz(end,2)];
